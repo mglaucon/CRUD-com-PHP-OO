@@ -1,6 +1,7 @@
 <?php 
 
 namespace App\Db;
+
 use \PDO;
 use \PDOException;
 
@@ -74,5 +75,15 @@ class Database{
         $query = "INSERT INTO ". $this->table ." (". implode(', ', $fields) .") VALUES (". implode(',', $binds) .")";
         $this->execute($query, array_values($values));
         return $this->connection->lastInsertId();
+    }
+
+    public function select($where = null, $order = null, $limit = null, $fields = '*')
+    {
+        $where = strlen($where) ? 'WHERE '.$where : '';
+        $order = strlen($order) ? 'ORDER BY '.$order : '';
+        $limit = strlen($limit) ? 'LIMIT '.$limit : '';
+
+        $query = 'SELECT * FROM '.$this->table.' '.$where.' '.$limit;
+        return $this->execute($query);
     }
 }

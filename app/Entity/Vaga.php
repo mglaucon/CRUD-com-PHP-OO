@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Db\Database;
+use \PDO;
 
 class Vaga{
     /**
@@ -48,6 +49,11 @@ class Vaga{
                                 'ativo'     => $this->ativo,
                                 'data'      => $this->data
                             ]);
-        echo '<pre>'; print_r($this); echo '</pre>'; exit;
+        return true;
+    }
+
+    public static function getVagas($where = null, $order = null, $limit = null){
+        return (new Database('vagas'))->select($where, $order, $limit)
+                                      ->fetchAll(PDO::FETCH_CLASS,self::class);
     }
 }
